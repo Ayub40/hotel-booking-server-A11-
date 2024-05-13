@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 2000;
@@ -38,6 +38,41 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+
+        app.get('/room/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+
+            // const options = {
+            //     projection: { RoomDescription: 1, PricePerNight: 1, RoomSize: 1, RoomImages: 1, Availability: 1, SpecialOffers: 1 }
+            // }
+
+            const result = await roomCollection.findOne(query);
+            res.send(result);
+        })
+
+        // app.get('/room/:Availability', async (req, res) => {
+        //     console.log(req.params.Availability);
+        //     const availability = req.query.availability || 'Available';
+
+        //     const cursor = roomCollection.find({ Availability: 'Available' });
+        //     const result = await cursor.toArray();
+        //     res.send(result);
+        // })
+
+        // app.get('/room', async (req, res) => {
+        //     const{Availability}=req.query;
+        //     let filter={};
+
+        //     if()
+
+
+
+        //         console.log(req.params.Availability);
+        //     const result = await roomCollection.find({ Availability: req.params.Availability })
+        //     res.send(result);
+        // })
+
 
 
         // Send a ping to confirm a successful connection
